@@ -1,0 +1,117 @@
+{
+  "contractName": "CryptoZombies",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/CryptoZombies.sol\":\"CryptoZombies\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/CryptoZombies.sol\":{\"keccak256\":\"0x440fd35dfeba41da8d9dff467a778487c887e31a79d34d5c733d1ea2325f09df\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4cd5c03201ba219d9af8d89cb738495384cb89e0140db480fb72818ad965fbce\",\"dweb:/ipfs/QmQ4yZKxktukDvuRYytKiQ52jy2mnmXSY7gSoxij3iCHt4\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122084c20ef0a68cbb93e437b63bab495dfe04cead25d3832866c531c0ed2ebdf7ea64736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea264697066735822122084c20ef0a68cbb93e437b63bab495dfe04cead25d3832866c531c0ed2ebdf7ea64736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "66:55:0:-:0;;;93:26;;;;;;;;;;66:55;;;;;;",
+  "deployedSourceMap": "66:55:0:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.22 <0.9.0;\n\ncontract CryptoZombies {\n  constructor() public {\n  }\n}\n",
+  "sourcePath": "/Users/takumi/Desktop/works/Repositories/kumahiyo/blockchain/crypto-zombies/contracts/CryptoZombies.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/CryptoZombies.sol",
+    "exportedSymbols": {
+      "CryptoZombies": [
+        6
+      ]
+    },
+    "id": 7,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".22",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:32:0"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "CryptoZombies",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 6,
+        "linearizedBaseContracts": [
+          6
+        ],
+        "name": "CryptoZombies",
+        "nameLocation": "75:13:0",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 4,
+              "nodeType": "Block",
+              "src": "114:5:0",
+              "statements": []
+            },
+            "id": 5,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "104:2:0"
+            },
+            "returnParameters": {
+              "id": 3,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "114:0:0"
+            },
+            "scope": 6,
+            "src": "93:26:0",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 7,
+        "src": "66:55:0",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:90:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.10",
+  "updatedAt": "2022-11-16T11:20:52.860Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
