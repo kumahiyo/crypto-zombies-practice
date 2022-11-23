@@ -8,13 +8,19 @@ contract ZombieFactory is Ownable {
 
   event NewZombie(uint zombieId, string name, uint dna);
 
-  // default to storage variables
+  // default to storage variables and internal scope.
   uint dnaDigits = 16;
   uint dnaModulus = 10 ** dnaDigits;
+  uint cooldownTime = 1 days;   // return number of second of time
 
   struct Zombie {
       string name;
       uint dna;
+      // structの中では、uint256よりuint32の方が確保するメモリ量が減り、gas代節約になる
+      // さらに、複数の変数をまとめて近くで宣言することでより節約される
+      // ※ structの外では、常に256bitが確保されるため節約にはならない
+      uint32 level;
+      uint32 readyTime;
   }
 
   // 他のアプリからも読み取り可能にしたい
@@ -35,7 +41,8 @@ contract ZombieFactory is Ownable {
   // internal は、privateに継承先からのアクセスも許可したもの
   // external は、外部contractからのアクセスのみ許可する (内部contractからのアクセス不可)
   function _createZombie(string memory _name, uint _dna) internal {
-      zombies.push(Zombie(_name, _dna));
+      // block.timestamp は、nowの新しい関数
+      zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime)));
 
       // local variable is memory by default. (not storage)
       uint id = zombies.length - 1;

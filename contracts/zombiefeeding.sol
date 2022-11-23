@@ -33,12 +33,25 @@ contract ZombieFeeding is ZombieFactory {
     kittyContract = KittyInterface(_address);
   }
 
-  function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) public {
+  // internalなので関数名には（_）がつく
+  // Zombie Structにデータを格納するため、storageが必要
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(block.timestamp + cooldownTime);
+  }
+
+  // Zomvie Structへのアクセスのみなのでviewをつける
+  function _isReady(Zombie storage _zombie) internal view returns(bool) {
+    return (_zombie.readyTime <= block.timestamp);
+  }
+
+  function _feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal {
       require(msg.sender == zombieToOwner[_zombieId]);
 
       // 関数内でstorageを使うと変数は参照となる
       // memoryを使うとコピーを変数に入れる
       Zombie storage myZombie = zombies[_zombieId];
+
+      require(_isReady(myZombie));
 
       // 16桁であることを保証
       _targetDna = _targetDna % dnaModulus;
@@ -51,6 +64,7 @@ contract ZombieFeeding is ZombieFactory {
           newDna = newDna - newDna % 100 + 99;
       }
       _createZombie("NoName", newDna);
+      _triggerCooldown(myZombie);
   }
 
   function feedOnKitty(uint _zombieId, uint _kittyId) public {
@@ -59,6 +73,6 @@ contract ZombieFeeding is ZombieFactory {
       // returnされる値が複数ある場合の取得方法
       (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
 
-      feedAndMultiply(_zombieId, kittyDna, "kitty");
+      _feedAndMultiply(_zombieId, kittyDna, "kitty");
   }
 }
