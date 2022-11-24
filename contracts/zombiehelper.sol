@@ -5,22 +5,41 @@ import "./zombiefeeding.sol";
 
 contract ZombieHelper is ZombieFeeding {
 
+  uint levelUpFee = 0.001 ether;
+
   // requireの処理を使いまわしたい時に使う
   modifier aboveLevel(uint _level, uint _zombieId) {
     require(zombies[_zombieId].level >= _level);
     _;
   }
 
+  function withdraw() external onlyOwner {
+    // このcontractをdeployしたaccountを取得する
+    address payable _owner = payable(owner());
+    // このcontractのaccountに保存されている全残高を、deployしたaccountに送金する
+    _owner.transfer(address(this).balance);
+  }
+
+  // ether は、将来価値が変わるかもしれないため、外部から変更できるようにする
+  function setLevelUpFee(uint _fee) external onlyOwner {
+    levelUpFee = _fee;
+  }
+
+  // payable は、modifierの一つでEthの支払いを可能にする.
+  // msg.value は、frontendから送信されてきたEth.
+  function levelUp(uint _zombieId) external payable {
+    require(msg.value == levelUpFee);
+    zombies[_zombieId].level++;
+  }
+
   // level2以上であれば使える能力
   // calldata は、externalの時のみ使える. (memoryのように実行後破棄されるが、コピーを作らず値が変更されないことを保証できる？)
-  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) {
-    require(msg.sender == zombieToOwner[_zombieId]);
+  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) ownerOf(_zombieId) {
     zombies[_zombieId].name = _newName;
   }
 
   // level20以上であれば使える能力
-  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
-    require(msg.sender == zombieToOwner[_zombieId]);
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) ownerOf(_zombieId) {
     zombies[_zombieId].dna = _newDna;
   }
 

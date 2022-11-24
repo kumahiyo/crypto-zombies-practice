@@ -21,6 +21,11 @@ contract ZombieFactory is Ownable {
       // ※ structの外では、常に256bitが確保されるため節約にはならない
       uint32 level;
       uint32 readyTime;
+      // 1日のクールタイムがある. したがって1日1回戦闘. 1年で365回.
+      // uint8 だと、2の8乗で256. オーバーフローしてしまう.
+      // uint16 だと、65536. 65536/365で179年. いける！ということ.
+      uint16 winCount;
+      uint16 lossCount;
   }
 
   // 他のアプリからも読み取り可能にしたい
@@ -42,7 +47,7 @@ contract ZombieFactory is Ownable {
   // external は、外部contractからのアクセスのみ許可する (内部contractからのアクセス不可)
   function _createZombie(string memory _name, uint _dna) internal {
       // block.timestamp は、nowの新しい関数
-      zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime)));
+      zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime), 0, 0));
 
       // local variable is memory by default. (not storage)
       uint id = zombies.length - 1;
@@ -58,8 +63,11 @@ contract ZombieFactory is Ownable {
   // view は、contract内の他の変数にアクセスするが、修正は行わない
   // pure は、関数外部の変数にも一切アクセスしないし、修正も行わない
   function _generateRandomDna(string memory _str) private view returns (uint) {
-      // keccak256: ハッシュ関数 insecure. 文字が1つ違うだけで全く違う文字列になる
+      // keccak256: ハッシュ関数. 文字が1つ違うだけで全く違う文字列になる
       // ハッシュ化した文字列をuintでキャスト
+      // keccak256は、安全ではない. しかし、この処理によって大金が得られるわけでなければ、
+      // 攻撃するだけの十分なメリットにはなり得ないほどの安全性はある.
+      // 安全な乱数を発生させるのであれば、oracleなどを使ってブロックチェーンの外部にアクセスする方法がある.
       uint rand = uint(keccak256(abi.encodePacked(_str)));
       // dnaModulus の文字長に
       return rand % dnaModulus;

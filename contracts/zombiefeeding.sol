@@ -26,6 +26,11 @@ contract ZombieFeeding is ZombieFactory {
   // Use Interface
   KittyInterface kittyContract;
 
+  modifier ownerOf(uint _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    _;
+  }
+
   // Interfaceのcontractを外部から変更できるようにすることで、
   // バグが見つかった時に、作り直したcontractに切り替えることができる
   // (ブロックチェーンでは一度deployしたcontractを変更できない)
@@ -44,9 +49,7 @@ contract ZombieFeeding is ZombieFactory {
     return (_zombie.readyTime <= block.timestamp);
   }
 
-  function _feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal {
-      require(msg.sender == zombieToOwner[_zombieId]);
-
+  function _feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf(_zombieId) {
       // 関数内でstorageを使うと変数は参照となる
       // memoryを使うとコピーを変数に入れる
       Zombie storage myZombie = zombies[_zombieId];
