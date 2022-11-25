@@ -5,8 +5,8 @@ import "./zombiefactory.sol";
 
 // Interface は、自分で所有しない前提のcontract
 // 業界で標準化した仕様をcontractに組み込んだりする場合に使う
-contract KittyInterface {
-  function getKitty(uint256 _id) external view returns (
+abstract contract KittyInterface {
+  function getKitty(uint256 _id) virtual external view returns (
       bool isGestating,
       bool isReady,
       uint256 cooldownIndex,
@@ -26,7 +26,7 @@ contract ZombieFeeding is ZombieFactory {
   // Use Interface
   KittyInterface kittyContract;
 
-  modifier ownerOf(uint _zombieId) {
+  modifier onlyOwnerOf(uint _zombieId) {
     require(msg.sender == zombieToOwner[_zombieId]);
     _;
   }
@@ -49,7 +49,7 @@ contract ZombieFeeding is ZombieFactory {
     return (_zombie.readyTime <= block.timestamp);
   }
 
-  function _feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf(_zombieId) {
+  function _feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal onlyOwnerOf(_zombieId) {
       // 関数内でstorageを使うと変数は参照となる
       // memoryを使うとコピーを変数に入れる
       Zombie storage myZombie = zombies[_zombieId];

@@ -13,7 +13,7 @@ contract ZombieHelper is ZombieFeeding {
     _;
   }
 
-  function withdraw() external onlyOwner {
+  function withdraw() external onlyOwnerOf {
     // このcontractをdeployしたaccountを取得する
     address payable _owner = payable(owner());
     // このcontractのaccountに保存されている全残高を、deployしたaccountに送金する
@@ -21,7 +21,7 @@ contract ZombieHelper is ZombieFeeding {
   }
 
   // ether は、将来価値が変わるかもしれないため、外部から変更できるようにする
-  function setLevelUpFee(uint _fee) external onlyOwner {
+  function setLevelUpFee(uint _fee) external onlyOwnerOf {
     levelUpFee = _fee;
   }
 
@@ -34,12 +34,12 @@ contract ZombieHelper is ZombieFeeding {
 
   // level2以上であれば使える能力
   // calldata は、externalの時のみ使える. (memoryのように実行後破棄されるが、コピーを作らず値が変更されないことを保証できる？)
-  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) ownerOf(_zombieId) {
+  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) onlyOwnerOf(_zombieId) {
     zombies[_zombieId].name = _newName;
   }
 
   // level20以上であれば使える能力
-  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) ownerOf(_zombieId) {
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) onlyOwnerOf(_zombieId) {
     zombies[_zombieId].dna = _newDna;
   }
 
