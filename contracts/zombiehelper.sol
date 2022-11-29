@@ -29,7 +29,7 @@ contract ZombieHelper is ZombieFeeding {
   // msg.value は、frontendから送信されてきたEth.
   function levelUp(uint _zombieId) external payable {
     require(msg.value == levelUpFee);
-    zombies[_zombieId].level++;
+    zombies[_zombieId].level = zombies[_zombieId].level.add(1);
   }
 
   // level2以上であれば使える能力
